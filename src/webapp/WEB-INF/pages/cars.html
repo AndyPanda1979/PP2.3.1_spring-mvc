@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CarsPage</title>
+</head>
+<body>
+<div>
+    <th:block th:each="msg : ${messages}">
+        <h1 th:text="${msg}"></h1>
+    </th:block>
+</div>
+<div>
+    <th:block th:each="carItem : ${cars}">
+        <table th:border=1>
+            <tbody>
+                <tr>
+                    <td th:width="200" th:align="center" th:text="${carItem.getCarModel()}"></td>
+                    <td th:width="100" th:align="center" th:text="${carItem.getCarPower()}"></td>
+                    <td th:width="150" th:align="center" th:text="${carItem.getCarProduceCountry()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </th:block>
+</div>
+
+</body>
+</html>
