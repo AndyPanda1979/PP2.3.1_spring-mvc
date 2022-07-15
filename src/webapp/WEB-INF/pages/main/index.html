@@ -9,6 +9,9 @@
     <th:block th:each="msg : ${messages}">
         <h1 th:text="${msg}"></h1>
     </th:block>
+    <form th:method="GET" th:action="@{/users}">
+        <input type="submit" value="To users page->">
+    </form>
 </div>
 </body>
 </html>
