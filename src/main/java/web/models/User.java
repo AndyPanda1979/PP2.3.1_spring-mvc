@@ -14,7 +14,7 @@ public class User {
     @Column (name = "first_name")
     private String firstName;
 
-    @Column (name = "lastname")
+    @Column (name = "last_name")
     private String lastName;
 
     public long getId() {
@@ -41,10 +41,11 @@ public class User {
         this.lastName = lastName;
     }
 
+    public User () {}
     public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public User () {}
+
 }

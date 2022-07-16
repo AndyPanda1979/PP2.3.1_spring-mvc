@@ -1,6 +1,5 @@
 package web.config;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,16 +9,16 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     // Метод, указывающий на класс конфигурации
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+       return new Class[]{DbConfig.class};
+
+
     }
 
 
     // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{
-                WebConfig.class
-        };
+        return new Class[]{WebConfig.class};
     }
 
     /* Данный метод указывает url, на котором будет базироваться приложение */
@@ -31,10 +30,10 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        registerHiddenFieldFilter(servletContext);
+        registerHiddenFieldFilter(servletContext);  // Подключение отлова скрытых методов с форм
     }
 
-    private void registerHiddenFieldFilter(ServletContext servletContext) {
+    private void registerHiddenFieldFilter(ServletContext servletContext) {    // Настройка отлова Hidden методов из формы
         servletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "/*");
 
     }

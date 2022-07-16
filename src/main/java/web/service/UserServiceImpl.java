@@ -1,4 +1,5 @@
 package web.service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
-
     private final UserDAOImpl userDAO;
-
+    @Autowired
     public UserServiceImpl(UserDAOImpl userDAO) {
         this.userDAO = userDAO;
     }
-    @Transactional
+
     @Override
     public List <User> getAllUsers() {
         return userDAO.getAllUsers();
