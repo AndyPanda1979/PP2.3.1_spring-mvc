@@ -1,18 +1,16 @@
 package web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
-import web.DAO.UserDAOImpl;
+import web.DAO.UserDAO;
 import web.models.User;
-
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
-    private final UserDAOImpl userDAO;
+
+    final
+    UserDAO userDAO;
     @Autowired
-    public UserServiceImpl(UserDAOImpl userDAO) {
+    public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

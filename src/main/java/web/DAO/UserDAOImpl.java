@@ -1,48 +1,50 @@
 package web.DAO;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.models.User;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public List <User> getAllUsers() {
-        System.out.println("POINT1");
-
-//        TypedQuery<User> query = transactionManager.getSessionFactory().getCurrentSession().createQuery("from User");
-//        return query.getResultList();
-        return null;
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
+        return query.getResultList();
     }
 
     @Override
+    @Transactional
     public User getUserById(Long id) {
-//        return tempUsers.stream().filter(user -> user.getId() == id).findAny().orElse(null);
-        return null;
+        return entityManager.find(User.class, id);
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
-//        user.setId(++ID_COUNTER);
-//        tempUsers.add(user);
+        entityManager.persist(user);
     }
 
     @Override
+    @Transactional
     public void updateUser(Long id, User updatedUser) {
-//        User proxyUser = getUserById(id);
-//        proxyUser.setFirstName(updatedUser.getFirstName());
-//        proxyUser.setLastName(updatedUser.getLastName());
+        User proxyUser = new User(updatedUser.getFirstName(), updatedUser.getLastName());
+        proxyUser.setId(id);
+        entityManager.merge(proxyUser);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
-//        tempUsers.removeIf(user -> user.getId() == id);
+        User proxyUser = entityManager.find(User.class, id);
+        entityManager.remove(proxyUser);
     }
 }

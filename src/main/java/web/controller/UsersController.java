@@ -4,18 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import web.DAO.UserDAOImpl;
 import web.models.User;
+import web.service.UserService;
 import web.service.UserServiceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     @Autowired
     public UsersController(UserServiceImpl userService) {
         this.userService = userService;
@@ -23,28 +22,24 @@ public class UsersController {
 
     @GetMapping()
     public String showAllUsers(ModelMap model) {
-        // @RequestParam(value = "count", required = false) Integer count
-        // все пользователи
-        model.addAttribute("users", userService.getAllUsers());
-        return "users/all";
+        List<User> users = userService.getAllUsers();
+        for (User item: users) {
+            System.out.println(item.getFirstName() + item.getLastName() + item.getId());
+        }
+        model.addAttribute("users", users);
+        return "users/allusers";
     }
 
     @GetMapping("/{id}")
-    public String showUserbyId(@PathVariable("id") Long id, ModelMap model) {
-        // @RequestParam(value = "count", required = false) Integer count
-        // пользователь по id
-        User resultUser = userService.getUserById(id);
-        if (resultUser != null) {
-            model.addAttribute("userName", resultUser.getFirstName() + " " + resultUser.getLastName());
-        }
-        model.addAttribute("user", resultUser);
-        return ("users/take");
+    public String showUserById(@PathVariable("id") Long id, ModelMap model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return ("users/takeuser");
     }
 
     @GetMapping("/addUser")
     public String addUser (ModelMap model) {
         model.addAttribute("user", new User());
-        return ("/users/add");
+        return ("/users/adduser");
     }
 
     @PostMapping()
@@ -56,7 +51,7 @@ public class UsersController {
     @GetMapping("/{id}/edit")
     public String editUser (@PathVariable ("id") long id, ModelMap model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "/users/edit";
+        return "/users/edituser";
     }
 
     @PatchMapping("/{id}")

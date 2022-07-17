@@ -1,4 +1,5 @@
 package web.config;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import javax.servlet.ServletContext;
@@ -10,8 +11,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected Class<?>[] getRootConfigClasses() {
        return new Class[]{DbConfig.class};
-
-
     }
 
 
@@ -30,11 +29,19 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        registerCharsetFilter(servletContext);      // Подключение кодировки UTF-8
         registerHiddenFieldFilter(servletContext);  // Подключение отлова скрытых методов с форм
+
     }
 
+    private void registerCharsetFilter (ServletContext servletContext) {
+        CharacterEncodingFilter charFilter = new CharacterEncodingFilter();
+        charFilter.setEncoding("UTF-8");
+        charFilter.setForceEncoding(true);
+        servletContext.addFilter("encodingFilter", charFilter).addMappingForUrlPatterns(null, true, "/*");
+    }
     private void registerHiddenFieldFilter(ServletContext servletContext) {    // Настройка отлова Hidden методов из формы
         servletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "/*");
-
     }
+
 }
