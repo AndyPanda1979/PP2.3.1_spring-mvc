@@ -15,7 +15,7 @@ import java.util.List;
 public class UsersController {
 
     private final UserService userService;
-    @Autowired
+
     public UsersController(UserServiceImpl userService) {
         this.userService = userService;
     }
@@ -23,9 +23,6 @@ public class UsersController {
     @GetMapping()
     public String showAllUsers(ModelMap model) {
         List<User> users = userService.getAllUsers();
-        for (User item: users) {
-            System.out.println(item.getFirstName() + item.getLastName() + item.getId());
-        }
         model.addAttribute("users", users);
         return "users/allusers";
     }

@@ -25,7 +25,7 @@ import java.util.Properties;
 public class DbConfig {
 
     private final Environment env;  // Через Environment можно забираться в файл в resources/?.properties
-    @Autowired
+
     public DbConfig( Environment env) {
         this.env = env;
     }

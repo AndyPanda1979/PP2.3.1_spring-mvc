@@ -1,5 +1,6 @@
 package web.DAO;
 
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.models.User;
@@ -11,8 +12,10 @@ import java.util.List;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
+
     @PersistenceContext
     private EntityManager entityManager;
+
 
     @Override
     @Transactional
@@ -36,9 +39,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     @Transactional
     public void updateUser(Long id, User updatedUser) {
-        User proxyUser = new User(updatedUser.getFirstName(), updatedUser.getLastName());
-        proxyUser.setId(id);
-        entityManager.merge(proxyUser);
+        entityManager.merge(updatedUser);
     }
 
     @Override
